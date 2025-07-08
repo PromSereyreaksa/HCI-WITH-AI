@@ -4,39 +4,26 @@
   "private": true,
   "scripts": {
     "build": "next build",
-  "dev": "next dev",
-  "start": "next start"
+    "dev": "next dev",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@types/node": "latest",
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "dotenv": "^17.1.0",
-    "express": "^5.1.0",
-    "jiti": "latest",
-    "less": "latest",
-    "lightningcss": "latest",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
     "react": "^19",
     "react-dom": "^19",
-    "sass": "latest",
-    "sass-embedded": "latest",
-    "shadcn": "latest",
-    "stylus": "latest",
-    "sugarss": "latest",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7",
-    "terser": "latest",
-    "tsx": "latest",
-    "yaml": "latest"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.55.0",
     "eslint-plugin-react": "^7.33.2",
@@ -44,7 +31,6 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.0",
-    "typescript": "^5",
-    "vite": "^5.0.8"
+    "typescript": "^5"
   }
 }

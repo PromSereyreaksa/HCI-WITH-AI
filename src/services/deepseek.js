@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // OpenRouter API configuration (using DeepSeek model through OpenRouter)
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
-const SITE_URL = import.meta.env.VITE_SITE_URL;
-const SITE_NAME = import.meta.env.VITE_SITE_NAME;
+const API_KEY = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME;
 
 // Kid-friendly system prompt to ensure appropriate responses
 const SYSTEM_PROMPT = `You are Buddy, a friendly AI companion designed specifically for children. Your responses should be:
@@ -22,6 +22,9 @@ Remember, you're talking to kids, so be their helpful, fun friend who loves to l
 export const sendMessageToDeepSeek = async (userMessage, conversationHistory = []) => {
   try {
     // Check if API key is available
+    console.log('API_KEY available:', !!API_KEY);
+    console.log('API_KEY first 10 chars:', API_KEY ? API_KEY.substring(0, 10) + '...' : 'undefined');
+    
     if (!API_KEY) {
       throw new Error('OpenRouter API key not found. Please check your .env file.');
     }
@@ -174,4 +177,14 @@ Give them a ${attemptNumber === 1 ? 'playful hint' : attemptNumber === 2 ? 'desc
     const gameHints = fallbackHints[gameType] || fallbackHints['monster-math'];
     return gameHints[Math.floor(Math.random() * gameHints.length)];
   }
+};
+
+// Temporary debug function - remove this later
+export const debugEnvVars = () => {
+  console.log('Environment variables debug:');
+  console.log('API_KEY:', !!API_KEY, API_KEY ? API_KEY.substring(0, 10) + '...' : 'undefined');
+  console.log('SITE_URL:', SITE_URL);
+  console.log('SITE_NAME:', SITE_NAME);
+  console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
+  return { hasApiKey: !!API_KEY, siteUrl: SITE_URL, siteName: SITE_NAME };
 };

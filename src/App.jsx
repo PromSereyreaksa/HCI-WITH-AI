@@ -6,9 +6,16 @@ import AvatarBot from "./components/AvatarBot"
 import "./App.css"
 import GameMenu from "./components/GameMenu"
 import PuzzleGame from "./components/PuzzleGame"
-import { sendMessageToDeepSeek, getGreetingMessage } from "./services/deepseek"
+import { sendMessageToDeepSeek, getGreetingMessage, debugEnvVars } from "./services/deepseek"
 
 function App() {
+  // Debug environment variables on component mount
+  useEffect(() => {
+    console.log('App mounted, checking env vars...');
+    const envDebug = debugEnvVars();
+    console.log('Environment debug result:', envDebug);
+  }, []);
+
   const [messages, setMessages] = useState([
     {
       id: 1,
