@@ -83,13 +83,15 @@ const GameMenu = ({ onSelectGame }) => {
         }
 
       case "animal-sounds":
+        const easyAnimals = [
+          { name: "COW", sound: "MOO MOO! 🐄", emoji: "🐄", hint: "I give milk and live on farms!" },
+          { name: "CAT", sound: "MEOW MEOW! 🐱", emoji: "🐱", hint: "I purr and love to chase mice!" },
+          { name: "DOG", sound: "WOOF WOOF! �", emoji: "🐶", hint: "I'm man's best friend!" },
+          { name: "DUCK", sound: "QUACK QUACK! 🦆", emoji: "🦆", hint: "I swim in ponds!" },
+        ]
+        const startingAnimal = easyAnimals[Math.floor(Math.random() * easyAnimals.length)]
         return {
-          currentAnimal: {
-            name: "COW",
-            sound: "MOO MOO! 🐄",
-            emoji: "🐄",
-            hint: "I give milk and live on farms!",
-          },
+          currentAnimal: startingAnimal,
           score: 0,
           streak: 0,
         }

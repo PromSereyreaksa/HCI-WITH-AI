@@ -6,31 +6,13 @@ import AvatarBot from "./components/AvatarBot"
 import "./App.css"
 import GameMenu from "./components/GameMenu"
 import PuzzleGame from "./components/PuzzleGame"
-
-const kidFriendlyResponses = [
-  "That's so cool! Tell me more! 🌟",
-  "Wow, you're really smart! What else would you like to know? 🧠",
-  "I love learning new things with you! What's your favorite subject? 📚",
-  "That's awesome! Did you know that butterflies taste with their feet? 🦋",
-  "You're asking great questions! Keep being curious! 🔍",
-  "That reminds me of a fun fact: Octopuses have three hearts! 🐙",
-  "I think you're super creative! What do you like to draw? 🎨",
-  "That's fantastic! Did you know that a group of flamingos is called a 'flamboyance'? 🦩",
-  "You're so thoughtful! What's your favorite animal? 🐾",
-  "Amazing question! Did you know that honey never spoils? 🍯",
-]
-
-const greetings = [
-  "Hi there, awesome kid! I'm Buddy, your AI friend! What would you like to chat about today? 🤖✨",
-  "Hello, superstar! Ready for some fun conversations? 🌟",
-  "Hey there, curious explorer! What adventure should we go on today? 🚀",
-]
+import { sendMessageToDeepSeek, getGreetingMessage } from "./services/deepseek"
 
 function App() {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: greetings[Math.floor(Math.random() * greetings.length)],
+      text: getGreetingMessage(),
       isBot: true,
       timestamp: new Date(),
     },
@@ -62,30 +44,47 @@ function App() {
     }
 
     setMessages((prev) => [...prev, userMessage])
+    const currentInput = inputText
     setInputText("")
     setIsTyping(true)
 
-    // Simulate AI thinking time
-    setTimeout(
-      () => {
-        const botResponse = {
-          id: Date.now() + 1,
-          text: kidFriendlyResponses[Math.floor(Math.random() * kidFriendlyResponses.length)],
-          isBot: true,
-          timestamp: new Date(),
-        }
-        setMessages((prev) => [...prev, botResponse])
-        setIsTyping(false)
-      },
-      1000 + Math.random() * 2000,
-    )
+    try {
+      // Get conversation history (last 10 messages for context)
+      const conversationHistory = messages.slice(-10)
+      
+      // Call DeepSeek API
+      const botResponseText = await sendMessageToDeepSeek(currentInput, conversationHistory)
+      
+      const botResponse = {
+        id: Date.now() + 1,
+        text: botResponseText,
+        isBot: true,
+        timestamp: new Date(),
+      }
+      
+      setMessages((prev) => [...prev, botResponse])
+    } catch (error) {
+      console.error('Error getting AI response:', error)
+      
+      // Fallback response if API call fails
+      const fallbackResponse = {
+        id: Date.now() + 1,
+        text: "Oops! I'm having trouble thinking right now. Can you try asking me again? 🤔",
+        isBot: true,
+        timestamp: new Date(),
+      }
+      
+      setMessages((prev) => [...prev, fallbackResponse])
+    } finally {
+      setIsTyping(false)
+    }
   }
 
   const clearChat = () => {
     setMessages([
       {
         id: 1,
-        text: "Hi again! Ready for a fresh start? What would you like to talk about? 🎉",
+        text: getGreetingMessage(),
         isBot: true,
         timestamp: new Date(),
       },
